@@ -1,0 +1,38 @@
+# Credentials and machine-local settings
+.env
+.env.*
+!.env.example
+
+# Python environments and caches
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.coverage
+htmlcov/
+
+# Persistent local monitoring state and generated reports
+state/*
+!state/.gitkeep
+reports/*
+!reports/.gitkeep
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Generated local data files, but keep the documented Iris demo artifacts
+/data/*
+!/data/model.joblib
+!/data/reference-iris-holdout-1.csv
+
+# OS/editor local files
+.DS_Store
+.idea/
+.vscode/

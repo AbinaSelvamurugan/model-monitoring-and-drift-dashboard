@@ -1,0 +1,56 @@
+services:
+  prepare:
+    build: .
+    env_file: .env
+    volumes: &shared
+      - modelwatch-data:/app/data
+      - modelwatch-state:/app/state
+      - modelwatch-reports:/app/reports
+    command: ["modelwatch", "prepare"]
+    restart: "no"
+  api:
+    build: .
+    env_file: .env
+    volumes: *shared
+    ports:
+      - "127.0.0.1:8000:8000"
+    depends_on:
+      prepare:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8000/health/ready',timeout=5)"]
+      interval: 20s
+      timeout: 8s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+  worker:
+    build: .
+    env_file: .env
+    volumes: *shared
+    command: ["python", "-m", "modelwatch.worker"]
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+  dashboard:
+    build: .
+    env_file: .env
+    volumes: *shared
+    command: ["streamlit", "run", "modelwatch/dashboard.py", "--server.address", "0.0.0.0", "--server.port", "8501", "--server.headless", "true"]
+    ports:
+      - "127.0.0.1:8501:8501"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8501/_stcore/health',timeout=5)"]
+      interval: 20s
+      timeout: 8s
+      retries: 3
+      start_period: 30s
+    restart: unless-stopped
+volumes:
+  modelwatch-data:
+  modelwatch-state:
+  modelwatch-reports:
