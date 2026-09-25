@@ -1,0 +1,23 @@
+name: modelwatch-python
+on:
+  push:
+  pull_request:
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -e '.[dev]'
+      - name: Ruff format and lint
+        run: |
+          ruff format .
+          ruff check --fix .
+          ruff check .
+      - run: python -m compileall -q modelwatch
+      - run: python -m pytest -q
+      - name: Evidently API smoke test (offline public dataset)
+        run: python scripts/verify_evidently.py
