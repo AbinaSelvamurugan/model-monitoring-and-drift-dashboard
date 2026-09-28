@@ -1,0 +1,60 @@
+{
+  "model_name": "iris-logreg-demo",
+  "model_version": "1.0.0",
+  "schema_version": "iris-1",
+  "preprocessing_version": "sklearn-pipeline-1",
+  "task": "classification",
+  "feature_types": {
+    "sepal length (cm)": "numeric",
+    "sepal width (cm)": "numeric",
+    "petal length (cm)": "numeric",
+    "petal width (cm)": "numeric"
+  },
+  "numeric_ranges": {
+    "sepal length (cm)": [
+      0,
+      20
+    ],
+    "sepal width (cm)": [
+      0,
+      20
+    ],
+    "petal length (cm)": [
+      0,
+      20
+    ],
+    "petal width (cm)": [
+      0,
+      20
+    ]
+  },
+  "categorical_values": {},
+  "allow_missing": [],
+  "classes": [
+    0,
+    1,
+    2
+  ],
+  "reference_version": "iris-holdout-1",
+  "window_seconds": 3600,
+  "min_events": 30,
+  "min_labels": 20,
+  "drift_method": "psi",
+  "drift_threshold": 0.2,
+  "drift_share_threshold": 0.5,
+  "latency_limit_ms": 200,
+  "error_rate_limit": 0.05,
+  "max_body_bytes": 1048576,
+  "max_batch_events": 500,
+  "retention_days": 30,
+  "alert_persistence": 2,
+  "alert_recovery": 2,
+  "alert_cooldown_seconds": 3600,
+  "performance_accuracy_drop": 0.1,
+  "performance_rmse_increase": 0.25,
+  "webhook_timeout_seconds": 5,
+  "ingestion_failure_limit": 3,
+  "max_missing_rates": {},
+  "requests_per_minute": 1200,
+  "alert_rules": {}
+}
